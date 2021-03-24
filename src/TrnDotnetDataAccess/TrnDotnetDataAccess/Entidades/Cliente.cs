@@ -18,6 +18,15 @@ namespace TrnDotnetDataAccess.Entidades
             Email = email;
             Senha = senha;
         }
+        public Cliente(Guid id)
+        {
+            Id = id;
+        }
+        public void Atualizar(string nome,string email)
+        {          
+            Nome = nome;
+            Email = email;
+        }
 
     }
 }
