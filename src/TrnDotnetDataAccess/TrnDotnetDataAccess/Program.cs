@@ -120,7 +120,8 @@ namespace TrnDotnetDataAccess
                     Console.WriteLine("Iniciou a transação");
                     var sqlCommandPedido = new SqlCommand();
                     sqlCommandPedido.Connection = sqlConnection;
-                    sqlCommandPedido.CommandText = "Insert into Pedido (Id,Data,ClienteID) values(@ID,@Data,@ClienteID);Insert into ItemPedido (PedidoID,ProdutoID,Quantidade) values(@PedidoID,@ProdutoID,@Quantidade)";
+                    sqlCommandPedido.Transaction = sqlTransaction;
+                    sqlCommandPedido.CommandText = "Insert into Pedido (Id,Data,ClienteID) values(@ID,@Data,@ClienteID)";
 
                     var pedido = new Pedido(cliente);
                     sqlCommandPedido.Parameters.Add(new SqlParameter("@Id", pedido.Id));
@@ -129,6 +130,11 @@ namespace TrnDotnetDataAccess
 
                     sqlCommandPedido.ExecuteNonQuery();
 
+
+                    var sqlCommandItemPedido = new SqlCommand();
+                    sqlCommandItemPedido.Connection = sqlConnection;
+                    sqlCommandItemPedido.Transaction = sqlTransaction;
+                    sqlCommandItemPedido.CommandText = "Insert into ItemPedido (PedidoID,ProdutoID,Quantidade) values(@PedidoID,@ProdutoID,@Quantidade)";
 
                     var itemPedido = new ItemPedido(pedido, produto, 10);
                     sqlCommandItemPedido.Parameters.Add(new SqlParameter("@PedidoId", itemPedido.Pedido.Id));
